@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Finance Pro | Gestão Completa</title>
+    <title>Finance Pro | Gestão Avançada</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -48,72 +48,65 @@
     <main class="max-w-lg mx-auto p-6 space-y-6">
         
         <section id="tab-dash" class="space-y-6 animate-in fade-in duration-500">
-            <header class="py-4">
-                <h1 class="text-4xl font-black tracking-tighter text-indigo-600 dark:text-indigo-400">Finance Pro</h1>
-                <p class="opacity-70 font-medium">Controle Total</p>
+            <header class="flex justify-between items-center py-4">
+                <h1 class="text-3xl font-black text-indigo-600 dark:text-indigo-400">Finance Pro</h1>
+                <input type="month" id="filtroMes" onchange="updateDashboard()" 
+                    class="bg-white dark:bg-slate-800 p-2 rounded-xl border border-slate-200 dark:border-slate-700 text-xs font-bold outline-none cursor-pointer">
             </header>
 
             <div class="grid gap-4">
-                <div class="glass p-8 rounded-[2.5rem] shadow-xl border-l-[12px] border-indigo-500 relative">
-                    <p class="text-[10px] font-black uppercase text-indigo-500 tracking-widest mb-1">Saldo Atual</p>
-                    <h2 class="text-4xl font-black" id="val-saldo">R$ 0,00</h2>
-                    <i data-lucide="wallet" class="absolute right-6 top-8 w-12 h-12 opacity-10"></i>
+                <div class="glass p-6 rounded-[2rem] shadow-xl border-l-[10px] border-indigo-500 relative">
+                    <p class="text-[10px] font-black uppercase text-indigo-500 tracking-widest mb-1">Saldo no Período</p>
+                    <h2 class="text-3xl font-black" id="val-saldo">R$ 0,00</h2>
+                    <i data-lucide="wallet" class="absolute right-6 top-6 w-10 h-10 opacity-10"></i>
                 </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="glass p-5 rounded-[2rem] border-b-4 border-emerald-500">
+                <div class="grid grid-cols-2 gap-4 text-center">
+                    <div class="glass p-4 rounded-[1.5rem] border-b-4 border-emerald-500">
                         <p class="text-[10px] font-bold text-emerald-500 uppercase">Receitas</p>
-                        <p id="val-receitas" class="text-lg font-bold">R$ 0,00</p>
+                        <p id="val-receitas" class="font-bold">R$ 0,00</p>
                     </div>
-                    <div class="glass p-5 rounded-[2rem] border-b-4 border-rose-500">
+                    <div class="glass p-4 rounded-[1.5rem] border-b-4 border-rose-500">
                         <p class="text-[10px] font-bold text-rose-500 uppercase">Despesas</p>
-                        <p id="val-despesas" class="text-lg font-bold">R$ 0,00</p>
+                        <p id="val-despesas" class="font-bold">R$ 0,00</p>
                     </div>
                 </div>
             </div>
 
-            <div class="glass p-6 rounded-[2.5rem] shadow-lg">
-                <p class="text-[10px] font-black uppercase mb-4 text-center opacity-50 tracking-widest">Despesas por Categoria</p>
-                <div class="relative h-64">
+            <div class="glass p-6 rounded-[2.5rem]">
+                <p class="text-[10px] font-black uppercase mb-4 text-center opacity-50 tracking-widest">Gastos por Categoria</p>
+                <div class="relative h-48">
                     <canvas id="chartCategorias"></canvas>
                 </div>
             </div>
 
-            <div class="glass p-6 rounded-[2.5rem] shadow-lg">
-                <p class="text-[10px] font-black uppercase mb-4 opacity-50 tracking-widest">Últimos Lançamentos</p>
-                <div id="lista-transacoes" class="space-y-3">
-                    <div class="animate-pulse flex space-x-4">
-                        <div class="flex-1 space-y-4 py-1">
-                            <div class="h-4 bg-slate-200 dark:bg-slate-700 rounded w-3/4"></div>
-                            <div class="h-4 bg-slate-200 dark:bg-slate-700 rounded w-1/2"></div>
-                        </div>
+            <div class="space-y-3">
+                <p class="text-[10px] font-black uppercase opacity-50 tracking-widest">Lançamentos Recentes</p>
+                <div id="lista-transacoes" class="space-y-2 text-sm">
                     </div>
-                </div>
             </div>
 
-            <button onclick="updateDashboard()" class="w-full py-4 bg-white dark:bg-slate-800 rounded-2xl font-bold text-sm shadow-md flex items-center justify-center gap-3 border border-slate-200 dark:border-slate-700 active:scale-95 transition-all">
+            <button onclick="updateDashboard()" class="w-full py-4 bg-white dark:bg-slate-800 rounded-2xl font-bold text-xs shadow border border-slate-200 dark:border-slate-700 flex items-center justify-center gap-2 active:scale-95 transition-all">
                 <i data-lucide="refresh-cw" id="refresh-icon" class="w-4 h-4"></i> Atualizar Dados
             </button>
         </section>
 
         <section id="tab-add" class="hidden space-y-6">
-            <header class="py-6 text-center">
-                <h1 class="text-3xl font-black text-indigo-600 italic tracking-widest uppercase">Nova Transação</h1>
-            </header>
-
             <form id="financeForm" class="glass p-8 rounded-[2.5rem] space-y-5 shadow-2xl border-t-8 border-indigo-500">
-                <div class="space-y-1">
-                    <label class="text-[10px] font-black uppercase opacity-60 ml-2">Descrição</label>
-                    <input type="text" id="descricao" required placeholder="Ex: Mercado" class="w-full p-4 bg-white/50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 font-semibold outline-none focus:ring-2 focus:ring-indigo-500">
-                </div>
+                <h2 class="text-2xl font-black text-center italic text-indigo-600">NOVO REGISTRO</h2>
                 
+                <div class="space-y-1">
+                    <label class="text-[10px] font-black uppercase opacity-50 ml-2">Descrição</label>
+                    <input type="text" id="descricao" required placeholder="Ex: Mercado" class="w-full p-4 bg-white/50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 outline-none">
+                </div>
+
                 <div class="grid grid-cols-2 gap-4">
                     <div class="space-y-1">
-                        <label class="text-[10px] font-black uppercase opacity-60 ml-2">Valor (R$)</label>
-                        <input type="number" step="0.01" id="valor" required placeholder="0.00" class="w-full p-4 bg-white/50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 font-semibold outline-none focus:ring-2 focus:ring-indigo-500">
+                        <label class="text-[10px] font-black uppercase opacity-50 ml-2">Valor</label>
+                        <input type="number" step="0.01" id="valor" required placeholder="0.00" class="w-full p-4 bg-white/50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 outline-none">
                     </div>
                     <div class="space-y-1">
-                        <label class="text-[10px] font-black uppercase opacity-60 ml-2">Tipo</label>
-                        <select id="tipo" class="w-full p-4 bg-white/50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 font-bold outline-none">
+                        <label class="text-[10px] font-black uppercase opacity-50 ml-2">Tipo</label>
+                        <select id="tipo" class="w-full p-4 bg-white/50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 outline-none font-bold">
                             <option value="Entrada">Receita (+)</option>
                             <option value="Saída" selected>Despesa (-)</option>
                         </select>
@@ -121,10 +114,10 @@
                 </div>
 
                 <div class="space-y-1">
-                    <label class="text-[10px] font-black uppercase opacity-60 ml-2">Categoria</label>
-                    <select id="categoria" class="w-full p-4 bg-white/50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 font-bold outline-none">
+                    <label class="text-[10px] font-black uppercase opacity-50 ml-2">Categoria</label>
+                    <select id="categoria" class="w-full p-4 bg-white/50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 outline-none font-bold">
                         <option value="Alimentação">🛒 Alimentação</option>
-                        <option value="Salário">💰 Salário / Renda</option>
+                        <option value="Salário">💰 Salário</option>
                         <option value="Moradia">🏠 Moradia</option>
                         <option value="Lazer">🎡 Lazer</option>
                         <option value="Transporte">🚗 Transporte</option>
@@ -133,19 +126,21 @@
                     </select>
                 </div>
 
-                <button type="submit" id="btnSalvar" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-black py-5 rounded-[2rem] shadow-xl text-lg uppercase tracking-widest transition-all active:scale-95">
+                <button type="submit" id="btnSalvar" class="w-full bg-indigo-600 text-white font-black py-5 rounded-[2rem] shadow-xl uppercase tracking-widest hover:bg-indigo-700 transition-all">
                     Registrar
                 </button>
             </form>
-            <div id="status" class="hidden text-center py-4 rounded-2xl font-bold border animate-pulse"></div>
+            <div id="status" class="hidden text-center py-4 rounded-2xl font-bold border animate-bounce"></div>
         </section>
-
     </main>
 
     <script>
-        // URL FORNECIDA
         const API_URL = 'https://script.google.com/macros/s/AKfycbx-QdOG-Jj098aG4XJfjYVzO26e7ax0jpJN5lOU5nv8RQFQdRzygtqRIcpQ2Sga_5SU/exec';
         let myChart = null;
+
+        // Inicia com o mês atual
+        const dataAtual = new Date();
+        document.getElementById('filtroMes').value = dataAtual.getFullYear() + "-" + ("0" + (dataAtual.getMonth() + 1)).slice(-2);
 
         lucide.createIcons();
 
@@ -155,6 +150,82 @@
             document.getElementById('btn-dash').classList.toggle('tab-active', tab === 'dash');
             document.getElementById('btn-add').classList.toggle('tab-active', tab === 'add');
             if(tab === 'dash') updateDashboard();
+        }
+
+        async function updateDashboard() {
+            const refreshIcon = document.getElementById('refresh-icon');
+            const mes = document.getElementById('filtroMes').value;
+            if(refreshIcon) refreshIcon.classList.add('animate-spin');
+            
+            try {
+                const response = await fetch(`${API_URL}?mes=${mes}&t=${new Date().getTime()}`);
+                const data = await response.json();
+                
+                document.getElementById('val-saldo').innerText = formatMoeda(data.dashboard.saldo);
+                document.getElementById('val-receitas').innerText = formatMoeda(data.dashboard.receitas);
+                document.getElementById('val-despesas').innerText = formatMoeda(data.dashboard.despesas);
+
+                const lista = document.getElementById('lista-transacoes');
+                lista.innerHTML = data.transacoes.map(t => `
+                    <div class="flex justify-between items-center p-4 rounded-2xl glass shadow-sm border border-slate-100 dark:border-slate-700/50">
+                        <div class="flex items-center gap-3">
+                            <button onclick="deletarItem(${t.id})" class="p-2 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-lg transition-all">
+                                <i data-lucide="trash-2" class="w-4 h-4"></i>
+                            </button>
+                            <div>
+                                <p class="font-bold text-slate-700 dark:text-slate-200">${t.descricao}</p>
+                                <p class="text-[9px] opacity-50 uppercase font-black">${t.categoria}</p>
+                            </div>
+                        </div>
+                        <p class="font-black ${t.tipo === 'Entrada' ? 'text-emerald-500' : 'text-rose-500'}">
+                            ${t.tipo === 'Entrada' ? '+' : '-'} ${formatMoeda(t.valor)}
+                        </p>
+                    </div>
+                `).join('') || '<p class="text-center text-xs opacity-50">Sem dados para este mês.</p>';
+
+                lucide.createIcons();
+                renderChart(data.grafico);
+            } catch (e) { console.error(e); }
+            finally { if(refreshIcon) refreshIcon.classList.remove('animate-spin'); }
+        }
+
+        async function deletarItem(id) {
+            if(!confirm("Tem certeza que deseja excluir?")) return;
+            try {
+                await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'DELETE', id: id }) });
+                updateDashboard();
+            } catch (e) { alert("Erro ao excluir."); }
+        }
+
+        function renderChart(dados) {
+            const ctx = document.getElementById('chartCategorias').getContext('2d');
+            const isDark = document.documentElement.classList.contains('dark');
+            if (myChart) myChart.destroy();
+            myChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(dados),
+                    datasets: [{
+                        data: Object.values(dados),
+                        backgroundColor: ['#6366f1', '#10b981', '#f43f5e', '#f59e0b', '#8b5cf6', '#06b6d4', '#94a3b8'],
+                        borderWidth: 0
+                    }]
+                },
+                options: { 
+                    responsive: true, 
+                    maintainAspectRatio: false,
+                    plugins: { 
+                        legend: { 
+                            position: 'right', 
+                            labels: { 
+                                boxWidth: 12, 
+                                font: { size: 10, weight: 'bold' }, 
+                                color: isDark ? '#fff' : '#000' 
+                            } 
+                        } 
+                    } 
+                }
+            });
         }
 
         function toggleTheme() {
@@ -168,115 +239,24 @@
             }
         }
 
-        async function updateDashboard() {
-            const icon = document.getElementById('refresh-icon');
-            if(icon) icon.classList.add('animate-spin');
-            
-            try {
-                const response = await fetch(`${API_URL}?t=${new Date().getTime()}`);
-                const data = await response.json();
-                
-                // 1. Atualizar Cards
-                document.getElementById('val-saldo').innerText = formatMoeda(data.dashboard.saldo);
-                document.getElementById('val-receitas').innerText = formatMoeda(data.dashboard.receitas);
-                document.getElementById('val-despesas').innerText = formatMoeda(data.dashboard.despesas);
-
-                // 2. Atualizar Lista de Transações
-                const lista = document.getElementById('lista-transacoes');
-                lista.innerHTML = data.transacoes.map(t => `
-                    <div class="flex justify-between items-center p-4 rounded-2xl bg-white dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700 shadow-sm">
-                        <div>
-                            <p class="font-bold text-sm">${t.descricao}</p>
-                            <p class="text-[10px] opacity-50 font-bold uppercase tracking-tighter">${t.categoria}</p>
-                        </div>
-                        <p class="font-black text-sm ${t.tipo === 'Entrada' ? 'text-emerald-500' : 'text-rose-500'}">
-                            ${t.tipo === 'Entrada' ? '+' : '-'} ${formatMoeda(t.valor)}
-                        </p>
-                    </div>
-                `).join('') || '<p class="text-center text-xs opacity-50">Nenhuma transação recente.</p>';
-
-                // 3. Atualizar Gráfico
-                renderChart(data.grafico);
-
-            } catch (error) {
-                console.error("Erro ao carregar dados:", error);
-            } finally {
-                if(icon) icon.classList.remove('animate-spin');
-            }
-        }
-
-        function renderChart(dados) {
-            const ctx = document.getElementById('chartCategorias').getContext('2d');
-            const labels = Object.keys(dados);
-            const valores = Object.values(dados);
-            const isDark = document.documentElement.classList.contains('dark');
-
-            if (myChart) myChart.destroy();
-            
-            myChart = new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        data: valores,
-                        backgroundColor: ['#6366f1', '#10b981', '#f43f5e', '#f59e0b', '#8b5cf6', '#06b6d4', '#94a3b8'],
-                        borderWidth: 0,
-                        hoverOffset: 10
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'bottom',
-                            labels: {
-                                padding: 20,
-                                color: isDark ? '#fff' : '#000',
-                                font: { size: 11, weight: 'bold', family: 'Inter' }
-                            }
-                        }
-                    },
-                    cutout: '70%'
-                }
-            });
-        }
-
-        function formatMoeda(v) { 
-            return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(v || 0); 
-        }
+        function formatMoeda(v) { return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(v || 0); }
 
         document.getElementById('financeForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = document.getElementById('btnSalvar');
-            const status = document.getElementById('status');
-            btn.disabled = true;
-            btn.innerText = "REGISTRANDO...";
-
+            btn.disabled = true; btn.innerText = "PROCESSANDO...";
             const payload = {
                 descricao: document.getElementById('descricao').value,
                 valor: parseFloat(document.getElementById('valor').value),
                 tipo: document.getElementById('tipo').value,
                 categoria: document.getElementById('categoria').value
             };
-
             try {
                 await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
-                status.innerText = "✨ SUCESSO!";
-                status.className = "text-emerald-500 bg-emerald-50 dark:bg-emerald-950/30 border-emerald-200 text-center block py-4 rounded-2xl font-bold";
                 document.getElementById('financeForm').reset();
-                setTimeout(() => {
-                    status.classList.add('hidden');
-                    showTab('dash');
-                }, 1500);
-            } catch (err) {
-                status.innerText = "❌ ERRO AO SALVAR";
-                status.className = "text-rose-500 bg-rose-50 dark:bg-rose-950/30 border-rose-200 text-center block py-4 rounded-2xl font-bold";
-            } finally {
-                status.classList.remove('hidden');
-                btn.disabled = false;
-                btn.innerText = "REGISTRAR";
-            }
+                showTab('dash');
+            } catch (err) { alert("Erro ao salvar."); }
+            finally { btn.disabled = false; btn.innerText = "REGISTRAR"; }
         });
 
         window.onload = updateDashboard;
