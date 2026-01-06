@@ -3,57 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meu Controle Financeiro</title>
+    <title>Finance Pro | Gestão Inteligente</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        body { 
+            font-family: 'Inter', sans-serif; 
+            transition: background-color 0.4s, color 0.4s; 
+        }
+        .dark { 
+            background-color: #0f172a; 
+            color: #f8fafc; 
+        }
+        .glass { 
+            background: rgba(255, 255, 255, 0.8); 
+            backdrop-filter: blur(12px); 
+            border: 1px solid rgba(255, 255, 255, 0.3); 
+        }
+        .dark .glass { 
+            background: rgba(30, 41, 59, 0.7); 
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+        }
+        input, select {
+            transition: all 0.2s ease-in-out;
+        }
+        input:focus, select:focus {
+            transform: translateY(-2px);
+        }
+    </style>
 </head>
-<body class="bg-slate-50 font-sans p-6">
+<body class="bg-slate-100 min-h-screen flex items-center justify-center p-4">
 
-    <div class="max-w-md mx-auto bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-100">
-        <div class="bg-indigo-600 p-6 text-white">
-            <h1 class="text-2xl font-bold text-center">Gestão Financeira</h1>
-            <p class="text-indigo-100 text-sm text-center">Simples, rápido e moderno</p>
+    <button onclick="toggleTheme()" class="fixed top-6 right-6 p-3 rounded-full glass shadow-xl hover:scale-110 active:scale-90 transition-all z-50">
+        <i id="themeIcon" data-lucide="moon" class="text-indigo-600 dark:text-yellow-400"></i>
+    </button>
+
+    <div class="w-full max-w-lg glass rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.1)] overflow-hidden border">
+        
+        <div class="bg-gradient-to-br from-indigo-600 via-indigo-700 to-violet-800 p-10 text-white relative overflow-hidden">
+            <div class="relative z-10">
+                <h1 class="text-3xl font-extrabold tracking-tight mb-1">Finance Pro</h1>
+                <p class="text-indigo-100 opacity-90 font-light italic">Sua gestão financeira simplificada.</p>
+            </div>
+            <i data-lucide="trending-up" class="absolute -right-4 -bottom-4 w-32 h-32 opacity-10 rotate-12"></i>
         </div>
 
-        <form id="financeForm" class="p-6 space-y-4">
-            <div>
-                <label class="block text-sm font-medium text-slate-700">Descrição</label>
-                <input type="text" id="descricao" required placeholder="Ex: Aluguel" 
-                    class="w-full mt-1 p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+        <form id="financeForm" class="p-8 space-y-7">
+            
+            <div class="space-y-2">
+                <label class="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 ml-1">
+                    <i data-lucide="tag" class="w-4 h-4"></i> Descrição do Gasto
+                </label>
+                <input type="text" id="descricao" required placeholder="Ex: Mercado Semanal" 
+                    class="w-full p-4 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none shadow-sm text-slate-700 dark:text-slate-200">
             </div>
 
-            <div>
-                <label class="block text-sm font-medium text-slate-700">Valor (R$)</label>
-                <input type="number" step="0.01" id="valor" required placeholder="0,00" 
-                    class="w-full mt-1 p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
-            </div>
+            <div class="grid grid-cols-2 gap-6">
+                <div class="space-y-2">
+                    <label class="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 ml-1">
+                        <i data-lucide="dollar-sign" class="w-4 h-4"></i> Valor
+                    </label>
+                    <input type="number" step="0.01" id="valor" required placeholder="0,00" 
+                        class="w-full p-4 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none shadow-sm text-slate-700 dark:text-slate-200">
+                </div>
 
-            <div>
-                <label class="block text-sm font-medium text-slate-700">Tipo</label>
-                <select id="tipo" class="w-full mt-1 p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
-                    <option value="Entrada">Entrada (+)</option>
-                    <option value="Saída">Saída (-)</option>
-                </select>
+                <div class="space-y-2">
+                    <label class="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 ml-1">
+                        <i data-lucide="list-filter" class="w-4 h-4"></i> Categoria
+                    </label>
+                    <select id="tipo" class="w-full p-4 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none shadow-sm text-slate-700 dark:text-slate-200 cursor-pointer">
+                        <option value="Entrada">Entrada (+)</option>
+                        <option value="Saída">Saída (-)</option>
+                    </select>
+                </div>
             </div>
 
             <button type="submit" id="btnSalvar"
-                class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-lg transition duration-200 shadow-lg">
-                Salvar Lançamento
+                class="w-full bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white font-bold py-5 rounded-2xl transition-all duration-300 shadow-[0_10px_20px_rgba(79,70,229,0.3)] hover:shadow-indigo-500/40 active:scale-[0.98] flex items-center justify-center gap-3 group">
+                <span id="btnText">Registrar Lançamento</span>
+                <i data-lucide="check-circle" class="w-5 h-5 group-hover:rotate-12 transition-transform"></i>
             </button>
         </form>
         
-        <div id="status" class="hidden text-center pb-4 font-medium"></div>
+        <div id="status" class="hidden text-center pb-8 animate-pulse font-semibold"></div>
     </div>
 
     <script>
+        // URL da sua planilha já integrada
         const APP_URL = 'https://script.google.com/macros/s/AKfycbxHMOXNNgFlQh87WqUxSk6-Bxx8FsHPid3S7M3txHWoXqCWaAMk8mUSnLcatXzIF-li/exec';
 
+        // Inicializar os ícones
+        lucide.createIcons();
+
+        // Alternar entre modo claro e escuro
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.getElementById('themeIcon');
+            body.classList.toggle('dark');
+            
+            const isDark = body.classList.contains('dark');
+            themeIcon.setAttribute('data-lucide', isDark ? 'sun' : 'moon');
+            lucide.createIcons(); // Recarrega o ícone atualizado
+        }
+
+        // Manipulação do Formulário
         document.getElementById('financeForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = document.getElementById('btnSalvar');
+            const btnText = document.getElementById('btnText');
             const status = document.getElementById('status');
             
+            // Estado de carregamento
             btn.disabled = true;
-            btn.innerText = 'Enviando...';
+            btnText.innerText = 'Processando...';
+            btn.classList.add('opacity-80', 'cursor-not-allowed');
 
             const payload = {
                 descricao: document.getElementById('descricao').value,
@@ -62,24 +127,31 @@
             };
 
             try {
+                // Envio para o Google Apps Script
                 await fetch(APP_URL, {
                     method: 'POST',
+                    mode: 'no-cors', // Importante para evitar erros de CORS com o Apps Script
                     body: JSON.stringify(payload)
                 });
                 
-                status.innerText = "✅ Salvo com sucesso!";
-                status.className = "text-green-600 text-center pb-4";
+                status.innerHTML = "🎉 Lançamento salvo com sucesso!";
+                status.className = "text-emerald-500 text-center pb-8 font-bold";
                 document.getElementById('financeForm').reset();
             } catch (error) {
-                status.innerText = "❌ Erro ao salvar.";
-                status.className = "text-red-600 text-center pb-4";
+                status.innerText = "❌ Erro ao conectar com a planilha.";
+                status.className = "text-red-500 text-center pb-8 font-bold";
             } finally {
                 status.classList.remove('hidden');
                 btn.disabled = false;
-                btn.innerText = 'Salvar Lançamento';
+                btnText.innerText = 'Registrar Lançamento';
+                btn.classList.remove('opacity-80', 'cursor-not-allowed');
+                
+                // Esconder a mensagem após 4 segundos
+                setTimeout(() => {
+                    status.classList.add('hidden');
+                }, 4000);
             }
         });
     </script>
 </body>
 </html>
-
