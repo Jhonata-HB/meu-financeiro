@@ -1,126 +1,128 @@
 <!DOCTYPE html>
-<html lang="pt-br" class="">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Finance Pro | Gestão Inteligente</title>
+    <title>Finance Pro | Gestão Completa</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     
     <script>
-        tailwind.config = {
-            darkMode: 'class',
-        }
+        tailwind.config = { darkMode: 'class' }
     </script>
 
     <style>
-        body { 
-            font-family: 'Inter', sans-serif; 
-            transition: background-color 0.4s ease, color 0.4s ease; 
-        }
+        body { font-family: 'Inter', sans-serif; transition: all 0.4s ease; }
         .glass { 
             background: rgba(255, 255, 255, 0.8); 
             backdrop-filter: blur(12px); 
             border: 1px solid rgba(255, 255, 255, 0.4); 
-            transition: background-color 0.4s ease, border 0.4s ease;
         }
         .dark .glass { 
             background: rgba(30, 41, 59, 0.7); 
             border: 1px solid rgba(255, 255, 255, 0.1); 
         }
-        .tab-active { 
-            color: #6366f1; 
-            border-bottom: 3px solid #6366f1; 
-        }
+        .tab-active { color: #6366f1; border-bottom: 3px solid #6366f1; }
+        .hidden { display: none; }
     </style>
 </head>
 <body class="bg-slate-50 dark:bg-slate-950 min-h-screen pb-24 text-slate-900 dark:text-slate-100">
 
     <nav class="fixed bottom-0 left-0 right-0 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 flex justify-around p-4 z-50 shadow-2xl">
         <button onclick="showTab('dash')" id="btn-dash" class="flex flex-col items-center gap-1 tab-active transition-all">
-            <i data-lucide="layout-dashboard" class="w-6 h-6"></i>
+            <i data-lucide="layout-dashboard"></i>
             <span class="text-[10px] font-bold uppercase tracking-widest">Resumo</span>
         </button>
         <button onclick="showTab('add')" id="btn-add" class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500 hover:text-indigo-500 transition-all">
-            <i data-lucide="plus-circle" class="w-6 h-6"></i>
+            <i data-lucide="plus-circle"></i>
             <span class="text-[10px] font-bold uppercase tracking-widest">Novo</span>
         </button>
         <button onclick="toggleTheme()" class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500 hover:text-yellow-500 transition-all">
-            <i data-lucide="sun" id="theme-icon" class="w-6 h-6"></i>
+            <i data-lucide="sun" id="theme-icon"></i>
             <span class="text-[10px] font-bold uppercase tracking-widest">Tema</span>
         </button>
     </nav>
 
-    <main class="max-w-lg mx-auto p-6">
+    <main class="max-w-lg mx-auto p-6 space-y-6">
         
         <section id="tab-dash" class="space-y-6 animate-in fade-in duration-500">
-            <header class="py-6">
-                <h1 class="text-4xl font-black tracking-tighter">Meu Painel</h1>
-                <p class="opacity-70 font-medium">Balanço geral das suas contas</p>
+            <header class="py-4">
+                <h1 class="text-4xl font-black tracking-tighter text-indigo-600 dark:text-indigo-400">Finance Pro</h1>
+                <p class="opacity-70 font-medium">Controle Total</p>
             </header>
 
             <div class="grid gap-4">
-                <div class="glass p-8 rounded-[2.5rem] shadow-xl border-l-[12px] border-indigo-500 relative overflow-hidden">
-                    <p class="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-500 mb-2">Saldo Disponível</p>
+                <div class="glass p-8 rounded-[2.5rem] shadow-xl border-l-[12px] border-indigo-500 relative">
+                    <p class="text-[10px] font-black uppercase text-indigo-500 tracking-widest mb-1">Saldo Atual</p>
                     <h2 class="text-4xl font-black" id="val-saldo">R$ 0,00</h2>
                     <i data-lucide="wallet" class="absolute right-6 top-8 w-12 h-12 opacity-10"></i>
                 </div>
-
                 <div class="grid grid-cols-2 gap-4">
-                    <div class="glass p-6 rounded-[2rem] border-b-4 border-emerald-500">
-                        <div class="flex items-center gap-2 mb-1 text-emerald-500">
-                            <i data-lucide="arrow-up-circle" class="w-4 h-4"></i>
-                            <span class="text-[10px] font-bold uppercase">Receitas</span>
-                        </div>
-                        <p class="text-xl font-bold" id="val-receitas">R$ 0,00</p>
+                    <div class="glass p-5 rounded-[2rem] border-b-4 border-emerald-500">
+                        <p class="text-[10px] font-bold text-emerald-500 uppercase">Receitas</p>
+                        <p id="val-receitas" class="text-lg font-bold">R$ 0,00</p>
                     </div>
-                    <div class="glass p-6 rounded-[2rem] border-b-4 border-rose-500">
-                        <div class="flex items-center gap-2 mb-1 text-rose-500">
-                            <i data-lucide="arrow-down-circle" class="w-4 h-4"></i>
-                            <span class="text-[10px] font-bold uppercase">Despesas</span>
-                        </div>
-                        <p class="text-xl font-bold" id="val-despesas">R$ 0,00</p>
+                    <div class="glass p-5 rounded-[2rem] border-b-4 border-rose-500">
+                        <p class="text-[10px] font-bold text-rose-500 uppercase">Despesas</p>
+                        <p id="val-despesas" class="text-lg font-bold">R$ 0,00</p>
                     </div>
                 </div>
             </div>
-            
-            <button onclick="updateDashboard()" class="w-full py-4 bg-white dark:bg-slate-800 rounded-2xl font-bold text-sm shadow-md hover:shadow-lg transition flex items-center justify-center gap-3 border border-slate-200 dark:border-slate-700 active:scale-95">
-                <i data-lucide="refresh-cw" class="w-4 h-4" id="refresh-icon"></i> 
-                Atualizar Dashboard
+
+            <div class="glass p-6 rounded-[2.5rem] shadow-lg">
+                <p class="text-[10px] font-black uppercase mb-4 text-center opacity-50 tracking-widest">Despesas por Categoria</p>
+                <div class="relative h-64">
+                    <canvas id="chartCategorias"></canvas>
+                </div>
+            </div>
+
+            <div class="glass p-6 rounded-[2.5rem] shadow-lg">
+                <p class="text-[10px] font-black uppercase mb-4 opacity-50 tracking-widest">Últimos Lançamentos</p>
+                <div id="lista-transacoes" class="space-y-3">
+                    <div class="animate-pulse flex space-x-4">
+                        <div class="flex-1 space-y-4 py-1">
+                            <div class="h-4 bg-slate-200 dark:bg-slate-700 rounded w-3/4"></div>
+                            <div class="h-4 bg-slate-200 dark:bg-slate-700 rounded w-1/2"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button onclick="updateDashboard()" class="w-full py-4 bg-white dark:bg-slate-800 rounded-2xl font-bold text-sm shadow-md flex items-center justify-center gap-3 border border-slate-200 dark:border-slate-700 active:scale-95 transition-all">
+                <i data-lucide="refresh-cw" id="refresh-icon" class="w-4 h-4"></i> Atualizar Dados
             </button>
         </section>
 
-        <section id="tab-add" class="hidden space-y-6 animate-in slide-in-from-bottom-4 duration-500">
+        <section id="tab-add" class="hidden space-y-6">
             <header class="py-6 text-center">
-                <h1 class="text-3xl font-black text-indigo-600 dark:text-indigo-400 italic tracking-widest">NOVA TRANSAÇÃO</h1>
+                <h1 class="text-3xl font-black text-indigo-600 italic tracking-widest uppercase">Nova Transação</h1>
             </header>
 
-            <form id="financeForm" class="glass p-8 rounded-[2.5rem] space-y-6 shadow-2xl border-t-8 border-indigo-500">
-                <div class="space-y-2">
-                    <label class="text-[10px] font-black uppercase tracking-widest opacity-60 ml-2">Descrição</label>
-                    <input type="text" id="descricao" required placeholder="Ex: Mercado" 
-                        class="w-full p-4 bg-white/50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 focus:ring-4 focus:ring-indigo-500/20 outline-none transition-all font-semibold">
+            <form id="financeForm" class="glass p-8 rounded-[2.5rem] space-y-5 shadow-2xl border-t-8 border-indigo-500">
+                <div class="space-y-1">
+                    <label class="text-[10px] font-black uppercase opacity-60 ml-2">Descrição</label>
+                    <input type="text" id="descricao" required placeholder="Ex: Mercado" class="w-full p-4 bg-white/50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 font-semibold outline-none focus:ring-2 focus:ring-indigo-500">
                 </div>
-
+                
                 <div class="grid grid-cols-2 gap-4">
-                    <div class="space-y-2">
-                        <label class="text-[10px] font-black uppercase tracking-widest opacity-60 ml-2">Valor (R$)</label>
-                        <input type="number" step="0.01" id="valor" required placeholder="0.00" 
-                            class="w-full p-4 bg-white/50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 outline-none focus:ring-4 focus:ring-indigo-500/20 font-semibold">
+                    <div class="space-y-1">
+                        <label class="text-[10px] font-black uppercase opacity-60 ml-2">Valor (R$)</label>
+                        <input type="number" step="0.01" id="valor" required placeholder="0.00" class="w-full p-4 bg-white/50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 font-semibold outline-none focus:ring-2 focus:ring-indigo-500">
                     </div>
-                    <div class="space-y-2">
-                        <label class="text-[10px] font-black uppercase tracking-widest opacity-60 ml-2">Tipo</label>
-                        <select id="tipo" class="w-full p-4 bg-white/50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 outline-none font-bold">
+                    <div class="space-y-1">
+                        <label class="text-[10px] font-black uppercase opacity-60 ml-2">Tipo</label>
+                        <select id="tipo" class="w-full p-4 bg-white/50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 font-bold outline-none">
                             <option value="Entrada">Receita (+)</option>
                             <option value="Saída" selected>Despesa (-)</option>
                         </select>
                     </div>
                 </div>
 
-                <div class="space-y-2">
-                    <label class="text-[10px] font-black uppercase tracking-widest opacity-60 ml-2">Categoria</label>
-                    <select id="categoria" class="w-full p-4 bg-white/50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 outline-none font-bold">
+                <div class="space-y-1">
+                    <label class="text-[10px] font-black uppercase opacity-60 ml-2">Categoria</label>
+                    <select id="categoria" class="w-full p-4 bg-white/50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 font-bold outline-none">
                         <option value="Alimentação">🛒 Alimentação</option>
                         <option value="Salário">💰 Salário / Renda</option>
                         <option value="Moradia">🏠 Moradia</option>
@@ -131,17 +133,19 @@
                     </select>
                 </div>
 
-                <button type="submit" id="btnSalvar" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-black py-5 rounded-[2rem] shadow-xl transition-all flex items-center justify-center gap-3 text-lg uppercase tracking-widest">
-                    <i data-lucide="send-horizontal"></i> Registrar
+                <button type="submit" id="btnSalvar" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-black py-5 rounded-[2rem] shadow-xl text-lg uppercase tracking-widest transition-all active:scale-95">
+                    Registrar
                 </button>
             </form>
-            <div id="status" class="hidden text-center py-4 rounded-2xl font-bold border animate-bounce"></div>
+            <div id="status" class="hidden text-center py-4 rounded-2xl font-bold border animate-pulse"></div>
         </section>
+
     </main>
 
     <script>
-        // URL ATUALIZADA
+        // URL FORNECIDA
         const API_URL = 'https://script.google.com/macros/s/AKfycbx-QdOG-Jj098aG4XJfjYVzO26e7ax0jpJN5lOU5nv8RQFQdRzygtqRIcpQ2Sga_5SU/exec';
+        let myChart = null;
 
         lucide.createIcons();
 
@@ -154,44 +158,100 @@
         }
 
         function toggleTheme() {
-            const htmlElement = document.documentElement;
-            htmlElement.classList.toggle('dark');
-            const isDark = htmlElement.classList.contains('dark');
+            document.documentElement.classList.toggle('dark');
+            const isDark = document.documentElement.classList.contains('dark');
             document.getElementById('theme-icon').setAttribute('data-lucide', isDark ? 'sun' : 'moon');
             lucide.createIcons();
-        }
-
-        async function updateDashboard() {
-            const refreshIcon = document.getElementById('refresh-icon');
-            if(refreshIcon) refreshIcon.classList.add('animate-spin');
-            
-            try {
-                // Fetch dos dados da planilha via doGet
-                const response = await fetch(API_URL);
-                const data = await response.json();
-                
-                document.getElementById('val-saldo').innerText = formatMoeda(data.saldo);
-                document.getElementById('val-receitas').innerText = formatMoeda(data.receitas);
-                document.getElementById('val-despesas').innerText = formatMoeda(data.despesas);
-            } catch (error) {
-                console.error("Erro ao atualizar Dashboard:", error);
-            } finally {
-                if(refreshIcon) refreshIcon.classList.remove('animate-spin');
+            if(myChart) {
+                myChart.options.plugins.legend.labels.color = isDark ? '#fff' : '#000';
+                myChart.update();
             }
         }
 
-        function formatMoeda(valor) {
-            return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(valor || 0);
+        async function updateDashboard() {
+            const icon = document.getElementById('refresh-icon');
+            if(icon) icon.classList.add('animate-spin');
+            
+            try {
+                const response = await fetch(`${API_URL}?t=${new Date().getTime()}`);
+                const data = await response.json();
+                
+                // 1. Atualizar Cards
+                document.getElementById('val-saldo').innerText = formatMoeda(data.dashboard.saldo);
+                document.getElementById('val-receitas').innerText = formatMoeda(data.dashboard.receitas);
+                document.getElementById('val-despesas').innerText = formatMoeda(data.dashboard.despesas);
+
+                // 2. Atualizar Lista de Transações
+                const lista = document.getElementById('lista-transacoes');
+                lista.innerHTML = data.transacoes.map(t => `
+                    <div class="flex justify-between items-center p-4 rounded-2xl bg-white dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700 shadow-sm">
+                        <div>
+                            <p class="font-bold text-sm">${t.descricao}</p>
+                            <p class="text-[10px] opacity-50 font-bold uppercase tracking-tighter">${t.categoria}</p>
+                        </div>
+                        <p class="font-black text-sm ${t.tipo === 'Entrada' ? 'text-emerald-500' : 'text-rose-500'}">
+                            ${t.tipo === 'Entrada' ? '+' : '-'} ${formatMoeda(t.valor)}
+                        </p>
+                    </div>
+                `).join('') || '<p class="text-center text-xs opacity-50">Nenhuma transação recente.</p>';
+
+                // 3. Atualizar Gráfico
+                renderChart(data.grafico);
+
+            } catch (error) {
+                console.error("Erro ao carregar dados:", error);
+            } finally {
+                if(icon) icon.classList.remove('animate-spin');
+            }
+        }
+
+        function renderChart(dados) {
+            const ctx = document.getElementById('chartCategorias').getContext('2d');
+            const labels = Object.keys(dados);
+            const valores = Object.values(dados);
+            const isDark = document.documentElement.classList.contains('dark');
+
+            if (myChart) myChart.destroy();
+            
+            myChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: valores,
+                        backgroundColor: ['#6366f1', '#10b981', '#f43f5e', '#f59e0b', '#8b5cf6', '#06b6d4', '#94a3b8'],
+                        borderWidth: 0,
+                        hoverOffset: 10
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                color: isDark ? '#fff' : '#000',
+                                font: { size: 11, weight: 'bold', family: 'Inter' }
+                            }
+                        }
+                    },
+                    cutout: '70%'
+                }
+            });
+        }
+
+        function formatMoeda(v) { 
+            return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(v || 0); 
         }
 
         document.getElementById('financeForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = document.getElementById('btnSalvar');
             const status = document.getElementById('status');
-            
             btn.disabled = true;
-            btn.innerHTML = '<i data-lucide="loader-2" class="animate-spin"></i> Gravando...';
-            lucide.createIcons();
+            btn.innerText = "REGISTRANDO...";
 
             const payload = {
                 descricao: document.getElementById('descricao').value,
@@ -201,29 +261,24 @@
             };
 
             try {
-                await fetch(API_URL, { 
-                    method: 'POST', 
-                    body: JSON.stringify(payload)
-                });
-                
-                status.innerText = "✨ LANÇAMENTO SALVO!";
+                await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
+                status.innerText = "✨ SUCESSO!";
                 status.className = "text-emerald-500 bg-emerald-50 dark:bg-emerald-950/30 border-emerald-200 text-center block py-4 rounded-2xl font-bold";
                 document.getElementById('financeForm').reset();
-                // Opcional: Volta para o dashboard e atualiza
-                setTimeout(() => showTab('dash'), 1500);
+                setTimeout(() => {
+                    status.classList.add('hidden');
+                    showTab('dash');
+                }, 1500);
             } catch (err) {
                 status.innerText = "❌ ERRO AO SALVAR";
                 status.className = "text-rose-500 bg-rose-50 dark:bg-rose-950/30 border-rose-200 text-center block py-4 rounded-2xl font-bold";
             } finally {
                 status.classList.remove('hidden');
                 btn.disabled = false;
-                btn.innerHTML = '<i data-lucide="send-horizontal"></i> Registrar';
-                lucide.createIcons();
-                setTimeout(() => status.classList.add('hidden'), 4000);
+                btn.innerText = "REGISTRAR";
             }
         });
 
-        // Executa ao carregar a página
         window.onload = updateDashboard;
     </script>
 </body>
