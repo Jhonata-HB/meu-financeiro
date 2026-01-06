@@ -3,39 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Finance Pro | Dashboard</title>
+    <title>Finance Pro | Gestão Inteligente</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+
     <style>
-        body { font-family: 'Inter', sans-serif; transition: all 0.3s ease; }
-        .dark { background-color: #0f172a; color: #f8fafc; }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            transition: background-color 0.4s ease, color 0.4s ease; 
+        }
         .glass { 
             background: rgba(255, 255, 255, 0.8); 
             backdrop-filter: blur(12px); 
-            border: 1px solid rgba(255, 255, 255, 0.3); 
+            border: 1px solid rgba(255, 255, 255, 0.4); 
+            transition: background-color 0.4s ease, border 0.4s ease;
         }
         .dark .glass { 
             background: rgba(30, 41, 59, 0.7); 
             border: 1px solid rgba(255, 255, 255, 0.1); 
         }
-        .tab-active { color: #6366f1; border-bottom: 3px solid #6366f1; }
-        .card-shadow { box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02); }
+        .tab-active { 
+            color: #6366f1; 
+            border-bottom: 3px solid #6366f1; 
+        }
+        /* Garantir que inputs não fiquem invisíveis no modo dark */
+        input, select {
+            color: inherit;
+        }
     </style>
 </head>
-<body class="bg-slate-50 min-h-screen pb-24">
+<body class="bg-slate-50 dark:bg-slate-950 min-h-screen pb-24 text-slate-900 dark:text-slate-100">
 
-    <nav class="fixed bottom-0 left-0 right-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-t dark:border-slate-800 flex justify-around p-4 z-50">
+    <nav class="fixed bottom-0 left-0 right-0 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 flex justify-around p-4 z-50 shadow-2xl">
         <button onclick="showTab('dash')" id="btn-dash" class="flex flex-col items-center gap-1 tab-active transition-all">
             <i data-lucide="layout-dashboard" class="w-6 h-6"></i>
             <span class="text-[10px] font-bold uppercase tracking-widest">Resumo</span>
         </button>
-        <button onclick="showTab('add')" id="btn-add" class="flex flex-col items-center gap-1 text-slate-400 hover:text-indigo-500 transition-all">
+        <button onclick="showTab('add')" id="btn-add" class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500 hover:text-indigo-500 transition-all">
             <i data-lucide="plus-circle" class="w-6 h-6"></i>
             <span class="text-[10px] font-bold uppercase tracking-widest">Novo</span>
         </button>
-        <button onclick="toggleTheme()" class="flex flex-col items-center gap-1 text-slate-400 hover:text-yellow-500 transition-all">
+        <button onclick="toggleTheme()" class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500 hover:text-yellow-500 transition-all">
             <i data-lucide="sun" id="theme-icon" class="w-6 h-6"></i>
             <span class="text-[10px] font-bold uppercase tracking-widest">Tema</span>
         </button>
@@ -45,36 +60,36 @@
         
         <section id="tab-dash" class="space-y-6 animate-in fade-in duration-500">
             <header class="py-6">
-                <h1 class="text-4xl font-black tracking-tighter text-slate-800 dark:text-white">Meu Painel</h1>
-                <p class="text-slate-500 dark:text-slate-400 font-medium">Balanço geral das suas contas</p>
+                <h1 class="text-4xl font-black tracking-tighter">Meu Painel</h1>
+                <p class="opacity-70 font-medium">Balanço geral das suas contas</p>
             </header>
 
             <div class="grid gap-4">
-                <div class="glass p-8 rounded-[2.5rem] card-shadow border-l-[12px] border-indigo-500 relative overflow-hidden">
-                    <p class="text-xs font-black uppercase tracking-[0.2em] text-indigo-500 mb-2">Saldo Disponível</p>
-                    <h2 class="text-4xl font-black" id="val-saldo">R$ ---</h2>
+                <div class="glass p-8 rounded-[2.5rem] shadow-xl border-l-[12px] border-indigo-500 relative overflow-hidden">
+                    <p class="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-500 mb-2">Saldo Disponível</p>
+                    <h2 class="text-4xl font-black" id="val-saldo">R$ 0,00</h2>
                     <i data-lucide="wallet" class="absolute right-6 top-8 w-12 h-12 opacity-10"></i>
                 </div>
 
                 <div class="grid grid-cols-2 gap-4">
                     <div class="glass p-6 rounded-[2rem] border-b-4 border-emerald-500">
-                        <div class="flex items-center gap-2 mb-2 text-emerald-500">
-                            <i data-lucide="trending-up" class="w-4 h-4"></i>
-                            <span class="text-[10px] font-bold uppercase tracking-widest">Receitas</span>
+                        <div class="flex items-center gap-2 mb-1 text-emerald-500">
+                            <i data-lucide="arrow-up-circle" class="w-4 h-4"></i>
+                            <span class="text-[10px] font-bold uppercase">Receitas</span>
                         </div>
-                        <p class="text-xl font-bold" id="val-receitas">R$ ---</p>
+                        <p class="text-xl font-bold" id="val-receitas">R$ 0,00</p>
                     </div>
                     <div class="glass p-6 rounded-[2rem] border-b-4 border-rose-500">
-                        <div class="flex items-center gap-2 mb-2 text-rose-500">
-                            <i data-lucide="trending-down" class="w-4 h-4"></i>
-                            <span class="text-[10px] font-bold uppercase tracking-widest">Despesas</span>
+                        <div class="flex items-center gap-2 mb-1 text-rose-500">
+                            <i data-lucide="arrow-down-circle" class="w-4 h-4"></i>
+                            <span class="text-[10px] font-bold uppercase">Despesas</span>
                         </div>
-                        <p class="text-xl font-bold" id="val-despesas">R$ ---</p>
+                        <p class="text-xl font-bold" id="val-despesas">R$ 0,00</p>
                     </div>
                 </div>
             </div>
             
-            <button onclick="updateDashboard()" class="w-full py-4 bg-white dark:bg-slate-800 rounded-2xl font-bold text-sm shadow-sm hover:shadow-md transition flex items-center justify-center gap-3 border dark:border-slate-700">
+            <button onclick="updateDashboard()" class="w-full py-4 bg-white dark:bg-slate-800 rounded-2xl font-bold text-sm shadow-md hover:shadow-lg transition flex items-center justify-center gap-3 border border-slate-200 dark:border-slate-700 active:scale-95">
                 <i data-lucide="refresh-cw" class="w-4 h-4" id="refresh-icon"></i> 
                 Atualizar Dashboard
             </button>
@@ -82,25 +97,25 @@
 
         <section id="tab-add" class="hidden space-y-6 animate-in slide-in-from-bottom-4 duration-500">
             <header class="py-6 text-center">
-                <h1 class="text-3xl font-black text-indigo-600 dark:text-indigo-400 uppercase italic">Nova Transação</h1>
+                <h1 class="text-3xl font-black text-indigo-600 dark:text-indigo-400 italic tracking-widest">NOVA TRANSAÇÃO</h1>
             </header>
 
-            <form id="financeForm" class="glass p-8 rounded-[2.5rem] space-y-6 shadow-2xl border-t-4 border-indigo-500">
+            <form id="financeForm" class="glass p-8 rounded-[2.5rem] space-y-6 shadow-2xl border-t-8 border-indigo-500">
                 <div class="space-y-2">
-                    <label class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-2">Descrição</label>
-                    <input type="text" id="descricao" required placeholder="Ex: Mercado" 
-                        class="w-full p-4 bg-slate-100 dark:bg-slate-800/50 rounded-2xl outline-none focus:ring-4 focus:ring-indigo-500/20 border-transparent focus:border-indigo-500 transition-all text-lg font-semibold">
+                    <label class="text-[10px] font-black uppercase tracking-widest opacity-60 ml-2">Descrição</label>
+                    <input type="text" id="descricao" required placeholder="Ex: Aluguel ou Salário" 
+                        class="w-full p-4 bg-white/50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 focus:ring-4 focus:ring-indigo-500/20 outline-none transition-all font-semibold">
                 </div>
 
                 <div class="grid grid-cols-2 gap-4">
                     <div class="space-y-2">
-                        <label class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-2">Valor (R$)</label>
+                        <label class="text-[10px] font-black uppercase tracking-widest opacity-60 ml-2">Valor (R$)</label>
                         <input type="number" step="0.01" id="valor" required placeholder="0.00" 
-                            class="w-full p-4 bg-slate-100 dark:bg-slate-800/50 rounded-2xl outline-none focus:ring-4 focus:ring-indigo-500/20 text-lg font-semibold">
+                            class="w-full p-4 bg-white/50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 outline-none focus:ring-4 focus:ring-indigo-500/20 font-semibold">
                     </div>
                     <div class="space-y-2">
-                        <label class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-2">Tipo</label>
-                        <select id="tipo" class="w-full p-4 bg-slate-100 dark:bg-slate-800/50 rounded-2xl outline-none focus:ring-4 focus:ring-indigo-500/20 font-bold appearance-none">
+                        <label class="text-[10px] font-black uppercase tracking-widest opacity-60 ml-2">Tipo</label>
+                        <select id="tipo" class="w-full p-4 bg-white/50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 outline-none focus:ring-4 focus:ring-indigo-500/20 font-bold">
                             <option value="Entrada">Receita (+)</option>
                             <option value="Saída" selected>Despesa (-)</option>
                         </select>
@@ -108,10 +123,10 @@
                 </div>
 
                 <div class="space-y-2">
-                    <label class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-2">Categoria</label>
-                    <select id="categoria" class="w-full p-4 bg-slate-100 dark:bg-slate-800/50 rounded-2xl outline-none focus:ring-4 focus:ring-indigo-500/20 font-bold">
+                    <label class="text-[10px] font-black uppercase tracking-widest opacity-60 ml-2">Categoria</label>
+                    <select id="categoria" class="w-full p-4 bg-white/50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 outline-none focus:ring-4 focus:ring-indigo-500/20 font-bold">
                         <option value="Alimentação">🛒 Alimentação</option>
-                        <option value="Salário">💰 Salário/Renda</option>
+                        <option value="Salário">💰 Salário / Renda</option>
                         <option value="Moradia">🏠 Moradia</option>
                         <option value="Lazer">🎡 Lazer</option>
                         <option value="Transporte">🚗 Transporte</option>
@@ -125,40 +140,47 @@
                     <i data-lucide="send-horizontal"></i> Registrar
                 </button>
             </form>
-            <div id="status" class="hidden text-center py-4 rounded-2xl font-bold animate-pulse"></div>
+            
+            <div id="status" class="hidden text-center py-4 rounded-2xl font-bold border animate-bounce"></div>
         </section>
 
     </main>
 
     <script>
-        // URL ATUALIZADA
-        const API_URL = 'https://script.google.com/macros/s/AKfycbx-QdOG-Jj098aG4XJfjYVzO26e7ax0jpJN5lOU5nv8RQFQdRzygtqRIcpQ2Sga_5SU/exec';
+        // URL da sua planilha já integrada
+        const API_URL = 'https://script.google.com/macros/s/AKfycbxHMOXNNgFlQh87WqUxSk6-Bxx8FsHPid3S7M3txHWoXqCWaAMk8mUSnLcatXzIF-li/exec';
 
+        // Inicializar ícones do Lucide
         lucide.createIcons();
 
-        // Troca de Abas
+        // Gerenciar Abas
         function showTab(tab) {
             document.getElementById('tab-dash').classList.toggle('hidden', tab !== 'dash');
             document.getElementById('tab-add').classList.toggle('hidden', tab !== 'add');
+            
             document.getElementById('btn-dash').classList.toggle('tab-active', tab === 'dash');
             document.getElementById('btn-add').classList.toggle('tab-active', tab === 'add');
             
             if(tab === 'dash') updateDashboard();
         }
 
-        // Alternar Tema
+        // Sistema de Tema Dark/Light
         function toggleTheme() {
-            const isDark = document.body.classList.toggle('dark');
+            const htmlElement = document.documentElement;
             const icon = document.getElementById('theme-icon');
+            
+            htmlElement.classList.toggle('dark');
+            const isDark = htmlElement.classList.contains('dark');
+            
             icon.setAttribute('data-lucide', isDark ? 'sun' : 'moon');
             lucide.createIcons();
         }
 
-        // Função para Buscar Dados da Planilha (Resumo)
+        // Buscar dados da Planilha (Resumo)
         async function updateDashboard() {
             const refreshIcon = document.getElementById('refresh-icon');
             refreshIcon.classList.add('animate-spin');
-
+            
             try {
                 const response = await fetch(API_URL);
                 const data = await response.json();
@@ -167,25 +189,25 @@
                 document.getElementById('val-receitas').innerText = formatMoeda(data.receitas);
                 document.getElementById('val-despesas').innerText = formatMoeda(data.despesas);
             } catch (error) {
-                console.error("Erro ao buscar dados:", error);
+                console.error("Erro ao atualizar Dashboard:", error);
             } finally {
                 refreshIcon.classList.remove('animate-spin');
             }
         }
 
-        // Formatação de Dinheiro
+        // Formatação BRL
         function formatMoeda(valor) {
             return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(valor || 0);
         }
 
-        // Enviar Novo Lançamento
+        // Enviar Transação (doPost)
         document.getElementById('financeForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = document.getElementById('btnSalvar');
             const status = document.getElementById('status');
             
             btn.disabled = true;
-            btn.innerHTML = '<i data-lucide="loader-2" class="animate-spin"></i> Gravando...';
+            btn.innerHTML = '<i data-lucide="loader-2" class="animate-spin"></i> Processando...';
             lucide.createIcons();
 
             const payload = {
@@ -196,28 +218,27 @@
             };
 
             try {
-                // Usando mode: 'no-cors' para evitar bloqueios de redirecionamento do Google
                 await fetch(API_URL, { 
                     method: 'POST', 
                     body: JSON.stringify(payload)
                 });
                 
-                status.innerText = "✨ LANÇAMENTO REALIZADO!";
-                status.className = "text-emerald-500 text-center block bg-emerald-50 py-4 rounded-2xl border border-emerald-200";
+                status.innerText = "✨ LANÇAMENTO REALIZADO COM SUCESSO!";
+                status.className = "text-emerald-500 bg-emerald-50 dark:bg-emerald-950/30 border-emerald-200 dark:border-emerald-800 text-center block py-4 rounded-2xl font-bold";
                 document.getElementById('financeForm').reset();
             } catch (err) {
-                status.innerText = "❌ ERRO AO SALVAR";
-                status.className = "text-rose-500 text-center block bg-rose-50 py-4 rounded-2xl border border-rose-200";
+                status.innerText = "❌ ERRO AO SALVAR NA PLANILHA";
+                status.className = "text-rose-500 bg-rose-50 dark:bg-rose-950/30 border-rose-200 dark:border-rose-800 text-center block py-4 rounded-2xl font-bold";
             } finally {
                 status.classList.remove('hidden');
                 btn.disabled = false;
                 btn.innerHTML = '<i data-lucide="send-horizontal"></i> Registrar';
                 lucide.createIcons();
-                setTimeout(() => status.classList.add('hidden'), 4000);
+                setTimeout(() => status.classList.add('hidden'), 5000);
             }
         });
 
-        // Carregar dashboard ao abrir o site
+        // Carregar dados ao iniciar a página
         updateDashboard();
     </script>
 </body>
