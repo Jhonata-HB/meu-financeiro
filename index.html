@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Finance Pro | Gestão Avançada</title>
+    <title>Finance Pro | Gestão Completa</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -73,14 +73,14 @@
             </div>
 
             <div class="glass p-6 rounded-[2.5rem]">
-                <p class="text-[10px] font-black uppercase mb-4 text-center opacity-50 tracking-widest">Gastos por Categoria</p>
+                <p class="text-[10px] font-black uppercase mb-4 text-center opacity-50 tracking-widest">Despesas por Categoria</p>
                 <div class="relative h-48">
                     <canvas id="chartCategorias"></canvas>
                 </div>
             </div>
 
             <div class="space-y-3">
-                <p class="text-[10px] font-black uppercase opacity-50 tracking-widest">Lançamentos Recentes</p>
+                <p class="text-[10px] font-black uppercase opacity-50 tracking-widest">Histórico do Mês</p>
                 <div id="lista-transacoes" class="space-y-2 text-sm">
                     </div>
             </div>
@@ -92,55 +92,73 @@
 
         <section id="tab-add" class="hidden space-y-6">
             <form id="financeForm" class="glass p-8 rounded-[2.5rem] space-y-5 shadow-2xl border-t-8 border-indigo-500">
-                <h2 class="text-2xl font-black text-center italic text-indigo-600">NOVO REGISTRO</h2>
+                <h2 class="text-2xl font-black text-center text-indigo-600 italic">NOVO REGISTRO</h2>
                 
                 <div class="space-y-1">
                     <label class="text-[10px] font-black uppercase opacity-50 ml-2">Descrição</label>
-                    <input type="text" id="descricao" required placeholder="Ex: Mercado" class="w-full p-4 bg-white/50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 outline-none">
+                    <input type="text" id="descricao" required placeholder="Ex: Compra Parcelada" class="w-full p-4 bg-white/50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 outline-none focus:ring-2 focus:ring-indigo-500">
                 </div>
 
                 <div class="grid grid-cols-2 gap-4">
                     <div class="space-y-1">
-                        <label class="text-[10px] font-black uppercase opacity-50 ml-2">Valor</label>
+                        <label class="text-[10px] font-black uppercase opacity-50 ml-2">Valor Total</label>
                         <input type="number" step="0.01" id="valor" required placeholder="0.00" class="w-full p-4 bg-white/50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 outline-none">
                     </div>
                     <div class="space-y-1">
-                        <label class="text-[10px] font-black uppercase opacity-50 ml-2">Tipo</label>
-                        <select id="tipo" class="w-full p-4 bg-white/50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 outline-none font-bold">
-                            <option value="Entrada">Receita (+)</option>
-                            <option value="Saída" selected>Despesa (-)</option>
+                        <label class="text-[10px] font-black uppercase opacity-50 ml-2">Parcelas</label>
+                        <select id="parcelas" class="w-full p-4 bg-white/50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 outline-none font-bold">
+                            <option value="1">À vista</option>
+                            <option value="2">2x</option>
+                            <option value="3">3x</option>
+                            <option value="4">4x</option>
+                            <option value="5">5x</option>
+                            <option value="6">6x</option>
+                            <option value="10">10x</option>
+                            <option value="12">12x</option>
                         </select>
                     </div>
                 </div>
 
-                <div class="space-y-1">
-                    <label class="text-[10px] font-black uppercase opacity-50 ml-2">Categoria</label>
-                    <select id="categoria" class="w-full p-4 bg-white/50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 outline-none font-bold">
-                        <option value="Alimentação">🛒 Alimentação</option>
-                        <option value="Salário">💰 Salário</option>
-                        <option value="Moradia">🏠 Moradia</option>
-                        <option value="Lazer">🎡 Lazer</option>
-                        <option value="Transporte">🚗 Transporte</option>
-                        <option value="Saúde">🏥 Saúde</option>
-                        <option value="Outros">⚙️ Outros</option>
-                    </select>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="space-y-1">
+                        <label class="text-[10px] font-black uppercase opacity-50 ml-2">Tipo</label>
+                        <select id="tipo" class="w-full p-4 bg-white/50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 outline-none font-bold">
+                            <option value="Saída">Despesa (-)</option>
+                            <option value="Entrada">Receita (+)</option>
+                        </select>
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-[10px] font-black uppercase opacity-50 ml-2">Categoria</label>
+                        <select id="categoria" class="w-full p-4 bg-white/50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 outline-none font-bold">
+                            <option value="Alimentação">🛒 Alimentação</option>
+                            <option value="Vestuário">👕 Vestuário</option>
+                            <option value="Salário">💰 Salário</option>
+                            <option value="Moradia">🏠 Moradia</option>
+                            <option value="Lazer">🎡 Lazer</option>
+                            <option value="Transporte">🚗 Transporte</option>
+                            <option value="Saúde">🏥 Saúde</option>
+                            <option value="Outros">⚙️ Outros</option>
+                        </select>
+                    </div>
                 </div>
 
-                <button type="submit" id="btnSalvar" class="w-full bg-indigo-600 text-white font-black py-5 rounded-[2rem] shadow-xl uppercase tracking-widest hover:bg-indigo-700 transition-all">
+                <button type="submit" id="btnSalvar" class="w-full bg-indigo-600 text-white font-black py-5 rounded-[2rem] shadow-xl uppercase tracking-widest hover:bg-indigo-700 transition-all active:scale-95">
                     Registrar
                 </button>
             </form>
             <div id="status" class="hidden text-center py-4 rounded-2xl font-bold border animate-bounce"></div>
         </section>
+
     </main>
 
     <script>
+        // URL da sua API Google Apps Script
         const API_URL = 'https://script.google.com/macros/s/AKfycbx-QdOG-Jj098aG4XJfjYVzO26e7ax0jpJN5lOU5nv8RQFQdRzygtqRIcpQ2Sga_5SU/exec';
         let myChart = null;
 
-        // Inicia com o mês atual
-        const dataAtual = new Date();
-        document.getElementById('filtroMes').value = dataAtual.getFullYear() + "-" + ("0" + (dataAtual.getMonth() + 1)).slice(-2);
+        // Inicializa o filtro com o mês corrente
+        const dataHoje = new Date();
+        document.getElementById('filtroMes').value = dataHoje.getFullYear() + "-" + ("0" + (dataHoje.getMonth() + 1)).slice(-2);
 
         lucide.createIcons();
 
@@ -153,9 +171,9 @@
         }
 
         async function updateDashboard() {
-            const refreshIcon = document.getElementById('refresh-icon');
+            const icon = document.getElementById('refresh-icon');
             const mes = document.getElementById('filtroMes').value;
-            if(refreshIcon) refreshIcon.classList.add('animate-spin');
+            if(icon) icon.classList.add('animate-spin');
             
             try {
                 const response = await fetch(`${API_URL}?mes=${mes}&t=${new Date().getTime()}`);
@@ -167,7 +185,7 @@
 
                 const lista = document.getElementById('lista-transacoes');
                 lista.innerHTML = data.transacoes.map(t => `
-                    <div class="flex justify-between items-center p-4 rounded-2xl glass shadow-sm border border-slate-100 dark:border-slate-700/50">
+                    <div class="flex justify-between items-center p-4 rounded-2xl glass shadow-sm border border-slate-100 dark:border-slate-700/50 group">
                         <div class="flex items-center gap-3">
                             <button onclick="deletarItem(${t.id})" class="p-2 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-lg transition-all">
                                 <i data-lucide="trash-2" class="w-4 h-4"></i>
@@ -181,20 +199,20 @@
                             ${t.tipo === 'Entrada' ? '+' : '-'} ${formatMoeda(t.valor)}
                         </p>
                     </div>
-                `).join('') || '<p class="text-center text-xs opacity-50">Sem dados para este mês.</p>';
+                `).join('') || '<p class="text-center text-xs opacity-50">Nenhum dado encontrado para este mês.</p>';
 
                 lucide.createIcons();
                 renderChart(data.grafico);
-            } catch (e) { console.error(e); }
-            finally { if(refreshIcon) refreshIcon.classList.remove('animate-spin'); }
+            } catch (e) { console.error("Erro na atualização:", e); }
+            finally { if(icon) icon.classList.remove('animate-spin'); }
         }
 
         async function deletarItem(id) {
-            if(!confirm("Tem certeza que deseja excluir?")) return;
+            if(!confirm("Deseja realmente excluir este lançamento?")) return;
             try {
                 await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'DELETE', id: id }) });
                 updateDashboard();
-            } catch (e) { alert("Erro ao excluir."); }
+            } catch (e) { alert("Erro ao tentar excluir."); }
         }
 
         function renderChart(dados) {
@@ -217,11 +235,7 @@
                     plugins: { 
                         legend: { 
                             position: 'right', 
-                            labels: { 
-                                boxWidth: 12, 
-                                font: { size: 10, weight: 'bold' }, 
-                                color: isDark ? '#fff' : '#000' 
-                            } 
+                            labels: { boxWidth: 12, font: { size: 10, weight: 'bold' }, color: isDark ? '#fff' : '#000' } 
                         } 
                     } 
                 }
@@ -244,18 +258,21 @@
         document.getElementById('financeForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = document.getElementById('btnSalvar');
-            btn.disabled = true; btn.innerText = "PROCESSANDO...";
+            btn.disabled = true; btn.innerText = "REGISTRANDO...";
+            
             const payload = {
                 descricao: document.getElementById('descricao').value,
                 valor: parseFloat(document.getElementById('valor').value),
                 tipo: document.getElementById('tipo').value,
-                categoria: document.getElementById('categoria').value
+                categoria: document.getElementById('categoria').value,
+                parcelas: document.getElementById('parcelas').value
             };
+
             try {
                 await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
                 document.getElementById('financeForm').reset();
                 showTab('dash');
-            } catch (err) { alert("Erro ao salvar."); }
+            } catch (err) { alert("Erro ao salvar lançamento."); }
             finally { btn.disabled = false; btn.innerText = "REGISTRAR"; }
         });
 
